@@ -49,6 +49,10 @@ $(function() {
 	
 		element = document.getElementById("get_ready");
 		element.parentNode.removeChild(element);
+		
+		ObstacleSound = new obsound("hit.mp3");
+		GameSound = new bgsound("background.mp3");
+		GameSound.play();
 	
 		var the_game = setInterval(function() {
 			if(collision(bird, pole_1) || collision(bird, pole_2) || parseInt(bird.css('top'))<= 0 || parseInt(bird.css('top'))>container_height - bird_height) {
@@ -112,6 +116,8 @@ $(function() {
 		function stop_the_game() {
 			clearInterval(the_game);
 			game_over = true;
+			ObstacleSound.play();
+			GameSound.stop();
 			show_game_over();
 		}
 	
@@ -145,6 +151,37 @@ $(function() {
 			};
 			return true;
 		}
+		
+		function bgsound(src) {
+			this.sound = document.createElement("audio");
+		    	this.sound.src = src;
+		    	this.sound.setAttribute("preload", "auto");
+		    	this.sound.setAttribute("controls", "none");
+		    	this.sound.setAttribute("loop", "true");
+		    	this.sound.style.display = "none";
+		    	document.body.appendChild(this.sound);
+		    	this.play = function(){
+				this.sound.play();
+		    	}
+		    	this.stop = function(){
+				this.sound.pause();
+		    	}
+		} 
+		
+		function obsound(src) {
+			this.sound = document.createElement("audio");
+		    	this.sound.src = src;
+		    	this.sound.setAttribute("preload", "auto");
+		    	this.sound.setAttribute("controls", "none");
+		    	this.sound.style.display = "none";
+		    	document.body.appendChild(this.sound);
+		    	this.play = function(){
+				this.sound.play();
+		    	}
+		    	this.stop = function(){
+				this.sound.pause();
+		    	}
+		} 
 	}
 	
 	restart_btn.click(function() {
